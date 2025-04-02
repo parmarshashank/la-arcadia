@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, KeyboardEvent } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import About from './About';
 import Tracks from './Tracks';
 import Timeline from './Timeline';
@@ -18,7 +18,6 @@ export default function Terminal() {
   const [executedCommands, setExecutedCommands] = useState<string[]>([]);
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
   const [currentInput, setCurrentInput] = useState('');
-  const [typing, setTyping] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const commands: Command[] = [
@@ -76,11 +75,9 @@ export default function Terminal() {
 
     const command = commands.find(cmd => cmd.command === input);
     if (command) {
-      setTyping(true);
       setCommandHistory([...commandHistory, input]);
       setTimeout(() => {
         setExecutedCommands([...executedCommands, command.id]);
-        setTyping(false);
       }, 500);
     } else {
       setCommandHistory([...commandHistory, input]);
@@ -100,7 +97,7 @@ export default function Terminal() {
       <div className="text-green-400 mb-8">
         Welcome to LA ARCADIA Terminal v1.0
         <br />
-        Type 'help' to see available commands:
+        Type &quot;help&quot; to see available commands:
       </div>
 
       {/* Command history and output */}
@@ -114,7 +111,7 @@ export default function Terminal() {
           </div>
           {executedCommands[index] === 'error' ? (
             <div className="text-red-500">
-              Command not found. Type 'help' to see available commands.
+              Command not found. Type &quot;help&quot; to see available commands.
             </div>
           ) : (
             executedCommands.includes(commands.find(c => c.command === cmd)?.id || '') && (
